@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL2_gfxPrimitives.h>
 #include <iostream>
 
 // Constants
@@ -56,6 +57,14 @@ int main(int argc, char* argv[])
         SDL_RenderClear(gRenderer);
 
         // Draw ball
+        int centerX = 320;
+        int centerY = 240;
+        int radius = 50;
+        Uint8 r = 0;
+        Uint8 g = 0;
+        Uint8 b = 255;
+        Uint8 a = 255;
+        filledCircleRGBA(gRenderer, centerX, centerY, radius, r, g, b, a);
         SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);
         SDL_RenderFillRect(gRenderer, &ballRect);
 

@@ -2,9 +2,10 @@
 
 - SDL2
     - SDL2 as well as libraries
-- cmake
+    - SLD2 gfx
 
 # building
 
-- `cmake .`
-- `make`
+- ./build.sh
+- ./game
+
