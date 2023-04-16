@@ -2,6 +2,7 @@
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <iostream>
 #include "ball/ball.hpp"
+#include "rect/rect.hpp"
 
 // Constants
 const int SCREEN_WIDTH = 640;
@@ -23,6 +24,7 @@ SDL_Renderer* gRenderer = NULL;
 int main(int argc, char* argv[])
 {
     Ball ball = *new Ball(320, 240, 20, 20, 0, 0, 0, 255);
+    Rect rect = *new Rect(0, 440, 40, 40, 0, 0, 0, 255);
     // Initialize SDL
     if (!init())
     {
@@ -58,6 +60,7 @@ int main(int argc, char* argv[])
         SDL_RenderClear(gRenderer);
 
         ball.draw(gRenderer);
+	rect.draw(gRenderer);
 
         // Update screen
         SDL_RenderPresent(gRenderer);
