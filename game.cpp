@@ -2,25 +2,56 @@
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <iostream>
 
+class Ball
+{
+    public:
+        int x;
+        int y;
+	int h;
+	int radius;
+	int r;
+	int g;
+	int b;
+	int a;
+
+        Ball(int x, int y, int h, int radius, int r, int g, int b, int a){
+            this->x = x;
+            this->y = y;
+            this->h = h;
+            this->radius = radius;
+            this->r = r;
+            this->g = g;
+            this->b = b;
+            this->a = a;
+	}
+        void draw(SDL_Renderer* gRenderer){
+		filledCircleRGBA(gRenderer, this->x, this->y, this->radius, this->r, this->g, this->b, this->a);
+	};
+        void update();
+        void handleInput();
+
+};
+
 // Constants
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
-const int BALL_SIZE = 40;
 const int GRAVITY = 1;
 
 // Function prototypes
 bool init();
 void close();
-void updateBallPosition(SDL_Rect& ballRect, int& yVelocity);
-void handleInput(SDL_Rect& ballRect, int& yVelocity);
+void updateBallPosition(Ball& ball, int& yVelocity);
+void handleInput(Ball& ball, int& yVelocity);
 
 // SDL-related variables
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 
+
 // Main function
 int main(int argc, char* argv[])
 {
+    Ball ball = *new Ball(320, 240, 20, 20, 0, 0, 255, 255);
     // Initialize SDL
     if (!init())
     {
@@ -29,7 +60,6 @@ int main(int argc, char* argv[])
     }
 
     // Set up ball's initial position
-    SDL_Rect ballRect = {SCREEN_WIDTH/2 - BALL_SIZE/2, SCREEN_HEIGHT - BALL_SIZE, BALL_SIZE, BALL_SIZE};
     int yVelocity = 0;
 
     // Game loop
@@ -47,26 +77,16 @@ int main(int argc, char* argv[])
         }
 
         // Handle input
-        handleInput(ballRect, yVelocity);
+        handleInput(ball, yVelocity);
 
         // Update ball position
-        updateBallPosition(ballRect, yVelocity);
+        updateBallPosition(ball, yVelocity);
 
         // Clear screen
         SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(gRenderer);
 
-        // Draw ball
-        int centerX = 320;
-        int centerY = 240;
-        int radius = 50;
-        Uint8 r = 0;
-        Uint8 g = 0;
-        Uint8 b = 255;
-        Uint8 a = 255;
-        filledCircleRGBA(gRenderer, centerX, centerY, radius, r, g, b, a);
-        SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);
-        SDL_RenderFillRect(gRenderer, &ballRect);
+        ball.draw(gRenderer);
 
         // Update screen
         SDL_RenderPresent(gRenderer);
@@ -119,17 +139,17 @@ void close()
     SDL_Quit();
 }
 
-void handleInput(SDL_Rect& ballRect, int& yVelocity)
+void handleInput(Ball& ball, int& yVelocity)
 {
     // Handle arrow key input
     const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
     if (currentKeyStates[SDL_SCANCODE_LEFT])
     {
-        ballRect.x -= 5;
+        ball.x -= 5;
     }
     else if (currentKeyStates[SDL_SCANCODE_RIGHT])
     {
-        ballRect.x += 5;
+        ball.x += 5;
     }
     else if (currentKeyStates[SDL_SCANCODE_UP] && yVelocity == 0)
     {
@@ -137,15 +157,15 @@ void handleInput(SDL_Rect& ballRect, int& yVelocity)
     }
 }
 
-void updateBallPosition(SDL_Rect& ballRect, int& yVelocity)
+void updateBallPosition(Ball& ball, int& yVelocity)
 {
-    ballRect.y -= yVelocity;
+    ball.y -= yVelocity;
     yVelocity -= GRAVITY;
 
     // Check for collision with floor
-    if (ballRect.y + ballRect.h > SCREEN_HEIGHT)
+    if (ball.y + ball.h > SCREEN_HEIGHT)
     {
-        ballRect.y = SCREEN_HEIGHT - ballRect.h;
+        ball.y = SCREEN_HEIGHT - ball.h;
         yVelocity = 0;
     }
 }
