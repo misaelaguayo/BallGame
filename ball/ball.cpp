@@ -11,6 +11,7 @@ Ball::Ball(int x, int y, int h, int radius, int r, int g, int b, int a){
     this->g = g;
     this->b = b;
     this->a = a;
+    this->isTouchingGround = false;
 }
 
 void Ball::draw(SDL_Renderer* gRenderer){

@@ -13,6 +13,7 @@ public:
     int g;
     int b;
     int a;
+    bool isTouchingGround;
 
     void update();
     void draw(SDL_Renderer* gRenderer);

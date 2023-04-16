@@ -114,16 +114,17 @@ void handleInput(Ball& ball, int& yVelocity)
 {
     // Handle arrow key input
     const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-    if (currentKeyStates[SDL_SCANCODE_LEFT])
+    if (currentKeyStates[SDL_SCANCODE_LEFT] && ball.x > ball.radius)
     {
         ball.x -= 5;
     }
-    else if (currentKeyStates[SDL_SCANCODE_RIGHT])
+    else if (currentKeyStates[SDL_SCANCODE_RIGHT] && ball.x < SCREEN_WIDTH - ball.radius)
     {
         ball.x += 5;
     }
-    else if (currentKeyStates[SDL_SCANCODE_UP] && yVelocity == 0)
+    else if (currentKeyStates[SDL_SCANCODE_UP] && yVelocity == 0 && ball.isTouchingGround)
     {
+	ball.isTouchingGround = false;
         yVelocity = 20;
     }
 }
@@ -137,6 +138,7 @@ void updateBallPosition(Ball& ball, int& yVelocity)
     if (ball.y + ball.h > SCREEN_HEIGHT)
     {
         ball.y = SCREEN_HEIGHT - ball.h;
+	ball.isTouchingGround = true;
         yVelocity = 0;
     }
 }
