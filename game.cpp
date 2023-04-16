@@ -1,36 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <iostream>
-
-class Ball
-{
-    public:
-        int x;
-        int y;
-	int h;
-	int radius;
-	int r;
-	int g;
-	int b;
-	int a;
-
-        Ball(int x, int y, int h, int radius, int r, int g, int b, int a){
-            this->x = x;
-            this->y = y;
-            this->h = h;
-            this->radius = radius;
-            this->r = r;
-            this->g = g;
-            this->b = b;
-            this->a = a;
-	}
-        void draw(SDL_Renderer* gRenderer){
-		filledCircleRGBA(gRenderer, this->x, this->y, this->radius, this->r, this->g, this->b, this->a);
-	};
-        void update();
-        void handleInput();
-
-};
+#include "ball/ball.hpp"
 
 // Constants
 const int SCREEN_WIDTH = 640;
@@ -51,7 +22,7 @@ SDL_Renderer* gRenderer = NULL;
 // Main function
 int main(int argc, char* argv[])
 {
-    Ball ball = *new Ball(320, 240, 20, 20, 0, 0, 255, 255);
+    Ball ball = *new Ball(320, 240, 20, 20, 0, 0, 0, 255);
     // Initialize SDL
     if (!init())
     {
